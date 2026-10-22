@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Зал 4800×4700 — план и 3D по обмеру</title>
+<style>
+  :root{--ink:#22262b;--warm:#efe7da;--acc:#b56b4f;--ok:#6f7a4f}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);background:#f4eee3}
+  header{background:linear-gradient(160deg,#2c2f33,#4a4438);color:#f2e5c9;padding:42px 20px 34px;text-align:center}
+  header h1{margin:0 0 6px;font-size:30px;letter-spacing:.4px;font-weight:800}
+  header p{margin:4px auto;max-width:720px;font-size:14.5px;color:#d9cdbb}
+  .cta{margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .cta a{display:block;padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none;font-size:15px}
+  .a3d{background:#c98463;color:#fff}
+  .a3d:hover{background:#b56b4f}
+  .aplan{background:rgba(240,233,223,.14);color:#f2e5c9;border:1px solid rgba(240,233,223,.45)}
+  .aplan:hover{background:rgba(240,233,223,.25)}
+  main{max-width:980px;margin:0 auto;padding:30px 18px 50px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px;margin-top:8px}
+  .card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 2px 10px rgba(60,50,30,.08)}
+  .card h3{margin:0 0 8px;font-size:15.5px}
+  .card p,.card li{margin:4px 0;font-size:13.5px;color:#57534a;line-height:1.5}
+  .card ul{margin:8px 0 0;padding-left:18px}
+  h2{font-size:20px;margin:28px 0 10px}
+  .note{font-size:12.5px;color:#7a7166;border-top:1px solid #ddd2c2;margin-top:34px;padding-top:14px}
+  table{border-collapse:collapse;width:100%;background:#fff;border-radius:12px;overflow:hidden;font-size:13.5px}
+  td,th{padding:8px 12px;border-bottom:1px solid #eee2d2;text-align:left}
+  th{background:#efe7da;font-size:12.5px}
+  .num{color:#b56b4f;font-weight:700;white-space:nowrap}
+</style>
+</head>
+<body>
+<header>
+  <h1>ЗАЛ 4800 × 4700</h1>
+  <p>Расстановка восстановлена по обмерной модели <b>зал.obj</b> (интерьер 4810 × 4670 мм).
+     ТВ-стена — западная (метка «ТВ», центр 1,32 м от СЗ угла), арка в прихожую — на юге, дверь в кухню — на западе.</p>
+  <div class="cta">
+    <a class="a3d" href="viz.html">▶ Открыть интерактивную 3D</a>
+    <a class="aplan" href="plan.svg">▦ План М 1:50 (SVG)</a>
+  </div>
+</header>
+<main>
+  <h2>Проёмы по обмеру</h2>
+  <table>
+    <tr><th>Стена</th><th>Проём</th><th>Размер</th><th>Привязка</th></tr>
+    <tr><td>Юг</td><td>Арка в прихожую</td><td class="num">1450 × 2200</td><td>117–262 от ЮЗ угла; свод: пятки 1600, замок 2200</td></tr>
+    <tr><td>Запад</td><td>Дверь в кухню</td><td class="num">850 × 2000</td><td>280–365 от юга</td></tr>
+    <tr><td>Север</td><td>Окно</td><td class="num">2140 × 1400</td><td>80–294, подоконник 600</td></tr>
+    <tr><td>Восток</td><td>Окно большое</td><td class="num">1320 × 1400</td><td>62–194 от севера, подоконник 600</td></tr>
+    <tr><td>Восток</td><td>Окно малое</td><td class="num">820 × 1400</td><td>275–357 от севера, подоконник 600</td></tr>
+  </table>
+
+  <h2>Ключевое</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>🛋 Диван и ТВ</h3>
+      <p>Диван 2900×1050 спинкой к лестнице, лицом к ТВ. Сидящие — <b>2,45 м до экрана 65″</b>, ось дивана смещена от ТВ-оси всего на 28 см. Журнальный стол Ø950 в 370 мм от дивана.</p>
+    </div>
+    <div class="card">
+      <h3>☦ Красный угол</h3>
+      <p>Северо-восточный, <b>справа от арки-входа</b> (юго-восток занят забежными ступенями): иконостас 780 по северной стене + икона на восточной, полка h1500, лампада с тёплым светом.</p>
+    </div>
+    <div class="card">
+      <h3>↗ Лестница — подвесная</h3>
+      <p>Консольные ступени без подступёнков: 4×220 по востоку → 4 забежные 180 (ЮВ угол, стальная опора) → 7×180 по югу + площадка 2990. Проступь 300, марш 900. LED-подсветка под каждой ступенью.</p>
+    </div>
+    <div class="card">
+      <h3>🏛 Архитектура</h3>
+      <p>Антресоль над западной полосой (потолок 2700, пол 2-го эт. +3000), остальной зал — световой колодец до ~5700 с наклонной кровлей над северной частью. Оконные рамы с импостами.</p>
+    </div>
+  </div>
+
+  <h2>4 стиля в 3D</h2>
+  <div class="grid">
+    <div class="card"><h3>Скан-минимализм</h3><p>Тёплый дуб, графитовый диван, латунь, кашемировый текстиль.</p></div>
+    <div class="card"><h3>Тёплый лофт</h3><p>Тёмная доска, кирпичная стена у лестницы, чёрные подвесы, кожа-коньяк.</p></div>
+    <div class="card"><h3>Тихая роскошь</h3><p>Кремовый букле, оливковые акценты, шторы в пол, бронза.</p></div>
+    <div class="card"><h3>Бохо-терракота</h3><p>Терракотовый диван, полосатый ковёр, пуф, ротанг-подвесы, льняные шторы.</p></div>
+  </div>
+
+  <h2>Эргономика</h2>
+  <div class="grid">
+    <div class="card">
+      <table>
+        <tr><th>Где</th><th>Ширина</th></tr>
+        <tr><td>Проход диван — стол</td><td class="num">720 мм</td></tr>
+        <tr><td>Коридор к лестнице (восток)</td><td class="num">~900 мм</td></tr>
+        <tr><td>Проход к кухне (запад, между ТВ-консолью и стеной)</td><td class="num">≥ 950 мм</td></tr>
+        <tr><td>Перед окном восточным</td><td class="num">1150 мм</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <ul>
+        <li>Шкаф-полки под южным маршем: 2650×550, высота до ступеней 1,7–2,4 м</li>
+        <li>Скамья-подоконник 1400×360 под северным окном</li>
+        <li>Консоль при входе 880 с круглым зеркалом в латунной оправе</li>
+        <li>Два растения: у прохода на кухню и рядом с креслом</li>
+        <li>Подсветка: LED в ступенях, 2 подвеса над столом, торшер, споты антресоли, лампада</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="note">Геометрия: D:\AI\ARCH\зал.obj → интерьер X 49–530, Z −356…−823 см (4810×4670 мм). План и 3D построены по координатам объекта; метки «ТВ», «Кухня», «Прихожая» — из исходного файла. Источник правды — obj.</p>
+</main>
+</body>
+</html>
