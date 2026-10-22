@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- ЗАЛ 4800 x 4700, M 1:50 (22 px = 1 m). Recovered from zal.obj (cm):
+     interior X 49..530 = 4810; Z -356..-823 = 4670. North at top, x from west, z from north.
+     TV wall = WEST (label, center 1.32 m from NW corner). Arch south, kitchen door west,
+     window north 2140x1400, east windows 1320/820 (sill 600). Stairs: run up east wall
+     (rising south), winders in SE corner, run west along south wall, landing, upper slab x<1370 (ceil 2700). -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1330 1160" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+      <rect width="6" height="6" fill="#e9e4da"/>
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#b9ac97" stroke-width="1.2"/>
+    </pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a5a2b"/>
+    </marker>
+    <marker id="arrd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5f6b76"/>
+    </marker>
+  </defs>
+
+  <rect width="1330" height="1160" fill="#f6f2ea"/>
+  <text x="28" y="44" font-size="25" font-weight="700" fill="#37312a">ЗАЛ 4800 × 4700 — план расстановки</text>
+  <text x="28" y="70" font-size="14.5" fill="#6b6156">М 1:50 · потолок над западной полосой 2700 (антресоль 3000), зал открыт до ~5700 · стены 300 (С/Ю) и 200 (З/В)</text>
+
+  <g transform="translate(96,150)">
+    <!-- стены -->
+    <rect x="-4.4" y="-6.6" width="110.2" height="6.6" fill="url(#hatch)" stroke="#4a4238" stroke-width="0.8"/>
+    <rect x="-4.4" y="102.74" width="110.2" height="6.6" fill="url(#hatch)" stroke="#4a4238" stroke-width="0.8"/>
+    <rect x="-4.4" y="0" width="4.4" height="102.74" fill="url(#hatch)" stroke="#4a4238" stroke-width="0.8"/>
+    <rect x="101.42" y="0" width="4.4" height="102.74" fill="url(#hatch)" stroke="#4a4238" stroke-width="0.8"/>
+    <rect x="0" y="0" width="105.82" height="102.74" fill="#f2ecdf" stroke="#4a4238" stroke-width="1"/>
+
+    <!-- антресоль: западная полоса x меньше 1.37 -->
+    <rect x="0" y="0" width="30.14" height="102.74" fill="none" stroke="#7a8ea3" stroke-width="1.5" stroke-dasharray="7 4"/>
+    <text x="14" y="51.5" font-size="10.5" fill="#7a8ea3" text-anchor="middle" transform="rotate(-90 14 51.5)">антресоль (потолок 2700 · пол 2 эт. 3000)</text>
+
+    <!-- ковёр -->
+    <rect x="25.3" y="5.5" width="53.9" height="63.8" rx="2" fill="none" stroke="#a08454" stroke-width="1.4" stroke-dasharray="4 3"/>
+
+    <!-- окно СЕВЕР 2140x1400: x 0.80..2.94 -->
+    <rect x="17.6" y="0" width="47.08" height="6.6" fill="#cfe3ef"/>
+    <line x1="17.6" y1="3.3" x2="64.68" y2="3.3" stroke="#5fa8d3" stroke-width="1.6"/>
+    <text x="41.2" y="-12" font-size="11" fill="#5f6b76" text-anchor="middle">окно 2140×1400 · подоконник 600 · x 0.80–2.94</text>
+
+    <!-- окна ВОСТОК -->
+    <rect x="101.42" y="60.06" width="4.4" height="29.04" fill="#cfe3ef" stroke="#9db9c9" stroke-width="0.8"/>
+    <rect x="101.42" y="24.2" width="4.4" height="18.04" fill="#cfe3ef" stroke="#9db9c9" stroke-width="0.8"/>
+    <text x="108.5" y="76.5" font-size="11" fill="#5f6b76">окно 1320×1400</text>
+    <text x="108.5" y="35" font-size="11" fill="#5f6b76">окно 820×1400</text>
+
+    <!-- арка-проём в ПРИХОЖУЮ: юг, x 1.17..2.62 -->
+    <rect x="25.74" y="102.74" width="31.9" height="6.6" fill="#f6f2ea"/>
+    <line x1="25.74" y1="102.74" x2="25.74" y2="109.34" stroke="#4a4238"/>
+    <line x1="57.64" y1="102.74" x2="57.64" y2="109.34" stroke="#4a4238"/>
+    <path d="M41.7,109.34 L35.6,102.74 L47.8,102.74 z" fill="none" stroke="#8a5a2b" stroke-width="1.1"/>
+    <text x="41.7" y="123" font-size="11" fill="#5f6b76" text-anchor="middle">арка в ПРИХОЖУЮ 1450×2200</text>
+
+    <!-- дверь в КУХНЮ: запад, z 2.80..3.65 -->
+    <rect x="-4.4" y="61.6" width="4.4" height="18.7" fill="#f6f2ea"/>
+    <path d="M0,61.6 A18.7,18.7 0 0 1 18.7,80.3 L0,80.3 z" fill="#b99a72" fill-opacity="0.35" stroke="#8a5a2b" stroke-width="1.1"/>
+    <text x="24" y="68" font-size="11" fill="#5f6b76">дверь в КУХНЮ 850×2000</text>
+
+    <!-- КРАСНЫЙ УГОЛ: СВ (справа от арки; ЮВ занят забежными) -->
+    <g>
+      <rect x="85.8" y="0.2" width="17.2" height="3.4" fill="#b8402f" fill-opacity="0.18"/>
+      <circle cx="88.8" cy="1.9" r="1.6" fill="#c8973f"/>
+      <circle cx="94.4" cy="1.9" r="2" fill="#c8973f"/>
+      <circle cx="100" cy="1.9" r="1.6" fill="#c8973f"/>
+      <path d="M85.8,4.2 V0.2 H103 V4.2" fill="none" stroke="#a3322c" stroke-width="1.4"/>
+      <text x="85.8" y="10.5" font-size="10.5" font-weight="700" fill="#a3322c">КРАСНЫЙ УГОЛ — справа от арки</text>
+      <text x="85.8" y="22" font-size="9.5" fill="#7c4340">иконостас 780 · полка h1500 · лампада</text>
+    </g>
+
+    <!-- ТВ-зона: западная стена, центр TV 1.325 от севера -->
+    <rect x="0" y="13.5" width="0.9" height="31.3" fill="#33343a"/>
+    <text x="4.5" y="11.5" font-size="11" font-weight="700" fill="#5f4f9e">ТВ 65″</text>
+    <rect x="0" y="14.85" width="7.7" height="39.6" fill="#c9a06a" opacity="0.8" stroke="#8a5a2b" stroke-width="1"/>
+    <text x="10" y="36" font-size="10.5" fill="#8a5a2b">консоль 1800×350 h500</text>
+
+    <!-- диван 2900x1050: x 2.45..3.50, z 0.30..3.20, лицом к ТВ -->
+    <g transform="translate(53.9,6.6)">
+      <rect x="0" y="0" width="23.1" height="63.8" rx="3.5" fill="#5b6472" stroke="#3e4550" stroke-width="1.2"/>
+      <rect x="17.6" y="1.8" width="5.5" height="60.2" rx="2" fill="#49525f"/>
+      <rect x="0.4" y="0.6" width="22.3" height="4.9" rx="2" fill="#49525f"/>
+      <rect x="0.4" y="58.3" width="22.3" height="4.9" rx="2" fill="#49525f"/>
+      <rect x="0.9" y="6.4" width="16.2" height="51" rx="2" fill="#6d7787"/>
+      <text x="-9" y="33" font-size="11.5" font-weight="600" fill="#202630" transform="rotate(-90 -9 33)" text-anchor="middle">диван 2900×1050 — лицом к ТВ</text>
+    </g>
+
+    <!-- журнальный стол -->
+    <circle cx="35.2" cy="35.2" r="10.45" fill="#d9b98c" opacity="0.9" stroke="#8a5a2b" stroke-width="1.3"/>
+    <text x="35.2" y="51" font-size="10.5" fill="#8a5a2b" text-anchor="middle">стол Ø950</text>
+
+    <!-- скамья-подоконник -->
+    <rect x="20.9" y="0.2" width="30.8" height="7.7" fill="#d7c2a0" stroke="#8a5a2b" stroke-width="1"/>
+    <text x="70" y="6.5" font-size="10.5" fill="#8a5a2b">← скамья-подоконник 1400×360 h450</text>
+
+    <!-- кресло СВ -->
+    <g transform="rotate(42 92.5 13)">
+      <rect x="83.2" y="3.8" width="17.6" height="17.6" rx="3" fill="#3f5b4e"/>
+      <rect x="84.2" y="5" width="13.4" height="11.4" rx="1.6" fill="#4a6a5c" opacity="0.6"/>
+    </g>
+    <text x="70" y="27" font-size="10.5" fill="#3f5b4e">кресло + торшер, вид на ТВ</text>
+    <circle cx="103.4" cy="55" r="5" fill="#7aa06c" stroke="#4d7a44" stroke-width="1.1"/>
+    <text x="110.5" y="57" font-size="10.5" fill="#4d7a44">оливковое дерево</text>
+    <circle cx="6.8" cy="52.5" r="4.4" fill="#7aa06c" stroke="#4d7a44" stroke-width="1.1"/>
+    <text x="10" y="54" font-size="10.5" fill="#4d7a44">крупное растение</text>
+
+    <!-- консоль при входе ЮЗ -->
+    <rect x="0" y="85" width="7.7" height="16.5" fill="#c9a06a" opacity="0.75" stroke="#8a5a2b" stroke-width="1"/>
+    <text x="10.5" y="95.5" font-size="10.5" fill="#8a5a2b">консоль при входе 880×350</text>
+
+    <!-- шкаф под маршем: x 1.95..3.55, z 4.05..4.60 -->
+    <rect x="42.9" y="89.1" width="35.2" height="12.1" fill="url(#hatch)" stroke="#5f6b76" stroke-width="1.1"/>
+    <text x="60.5" y="107.6" font-size="10" fill="#5f6b76" text-anchor="middle">шкаф под шагами (глуб 550)</text>
+
+    <!-- ЛЕСТНИЦА -->
+    <g font-size="9.5" fill="#5f4a20">
+      <rect x="86.02" y="56"   width="19.8" height="6.6" fill="#e6d6b8" stroke="#8a5a2b"/><text x="95.9" y="61" text-anchor="middle">1</text>
+      <rect x="86.02" y="62.6" width="19.8" height="6.6" fill="#e2d1b0" stroke="#8a5a2b"/><text x="95.9" y="67.6" text-anchor="middle">2</text>
+      <rect x="86.02" y="69.2" width="19.8" height="6.6" fill="#ddcba6" stroke="#8a5a2b"/><text x="95.9" y="74.2" text-anchor="middle">3</text>
+      <rect x="86.02" y="75.8" width="19.8" height="6.6" fill="#d9c69d" stroke="#8a5a2b"/><text x="95.9" y="80.8" text-anchor="middle">4</text>
+      <path d="M86.02,82.4 H105.82 V95.7 H95 L86.02,89 z"  fill="#d5bd93" stroke="#8a5a2b"/><text x="98.5" y="90.6">5</text>
+      <path d="M86.02,89.1 H102.72 V102.74 H86.02 z"      fill="#d1b78c" stroke="#8a5a2b"/><text x="96" y="95.6">6</text>
+      <path d="M86.02,89.1 H94.28 V102.74 H86.02 z"       fill="#cdaf82" stroke="#8a5a2b"/><text x="89.5" y="97">7</text>
+      <rect x="79.42" y="82.94" width="6.6" height="19.8" fill="#c7ad7f" stroke="#8a5a2b" fill-opacity="0.85"/><text x="82.7" y="94.4" text-anchor="middle">8</text>
+      <rect x="72.82" y="82.94" width="6.6" height="19.8" fill="#c3a877" stroke="#8a5a2b" fill-opacity="0.85"/><text x="76.1" y="94.4" text-anchor="middle">9</text>
+      <rect x="66.22" y="82.94" width="6.6" height="19.8" fill="#bfa370" stroke="#8a5a2b" fill-opacity="0.85"/><text x="69.5" y="94.4" text-anchor="middle">10</text>
+      <rect x="59.62" y="82.94" width="6.6" height="19.8" fill="#bb9e6a" stroke="#8a5a2b" fill-opacity="0.85"/><text x="62.9" y="94.4" text-anchor="middle">11</text>
+      <rect x="53.02" y="82.94" width="6.6" height="19.8" fill="#b79964" stroke="#8a5a2b" fill-opacity="0.85"/><text x="56.3" y="94.4" text-anchor="middle">12</text>
+      <rect x="46.42" y="82.94" width="6.6" height="19.8" fill="#b3935e" stroke="#8a5a2b" fill-opacity="0.85"/><text x="49.7" y="94.4" text-anchor="middle">13</text>
+      <rect x="39.82" y="82.94" width="6.6" height="19.8" fill="#af8d58" stroke="#8a5a2b" fill-opacity="0.85"/><text x="43.1" y="94.4" text-anchor="middle">14</text>
+      <rect x="30.14" y="82.94" width="9.68" height="19.8" fill="#a98a53" stroke="#8a5a2b" fill-opacity="0.9"/><text x="35" y="94.4" text-anchor="middle">15</text>
+    </g>
+    <path d="M96,50 V76 q0,4 -4,4 H38 q-4,0 -4,-4 v-2" fill="none" stroke="#8a5a2b" stroke-width="1.5" marker-end="url(#arr)"/>
+    <text x="100.5" y="47" font-size="10.5" fill="#8a5a2b">вход на лестницу</text>
+    <text x="40" y="123" font-size="10.5" fill="#7a5c33">площадка 2990 → выход на антресоль</text>
+    <text x="112" y="58" font-size="10.5" fill="#7a5c33">16 подъёмов: 4×220</text>
+    <text x="112" y="72" font-size="10.5" fill="#7a5c33">+ 11×180 + 140</text>
+    <text x="112" y="86" font-size="10.5" fill="#7a5c33">проступь 300</text>
+    <text x="86" y="112" font-size="10" fill="#7a5c33">забежные 5–7</text>
+
+    <!-- клиренсы -->
+    <line x1="45.8" y1="35.2" x2="52.2" y2="35.2" stroke="#5f6b76" stroke-width="1" marker-start="url(#arrd)" marker-end="url(#arrd)"/>
+    <text x="48" y="28" font-size="10" fill="#5f6b76" text-anchor="middle">370</text>
+    <line x1="66.1" y1="72.4" x2="66.1" y2="81.2" stroke="#5f6b76" stroke-width="1" marker-start="url(#arrd)" marker-end="url(#arrd)"/>
+    <text x="68.5" y="78.5" font-size="10" fill="#5f6b76">около дивана 720</text>
+
+    <!-- размеры -->
+    <g stroke="#44403a" stroke-width="1" fill="#44403a" font-size="12.5">
+      <line x1="0" y1="138" x2="105.82" y2="138" marker-start="url(#arrd)" marker-end="url(#arrd)"/>
+      <text x="52.9" y="133" text-anchor="middle">4800</text>
+      <line x1="-17" y1="0" x2="-17" y2="102.74" marker-start="url(#arrd)" marker-end="url(#arrd)"/>
+      <text x="-21" y="53" transform="rotate(-90 -21 53)" text-anchor="middle">4700</text>
+    </g>
+
+    <!-- роза ветров -->
+    <g transform="translate(126,-54)">
+      <line x1="0" y1="16" x2="0" y2="0" stroke="#44403a" stroke-width="1.4" marker-end="url(#arrd)"/>
+      <text y="-7" fill="#44403a" font-size="13" font-weight="700" text-anchor="middle">С</text>
+    </g>
+  </g>
+
+  <!-- справка справа -->
+  <g transform="translate(600,88)" font-size="13" fill="#3c362e">
+    <text x="0" y="0" font-size="17" font-weight="700" fill="#37312a">ПРОЁМЫ (точные, из зал.obj)</text>
+    <line x1="0" y1="12" x2="660" y2="12" stroke="#cfc4b2"/>
+    <text x="0" y="38">Юг · арка в прихожую <tspan font-weight="700">1450×2200</tspan>, центр x≈1900 от ЗЮ угла</text>
+    <text x="0" y="64">Запад · <tspan fill="#5f4f9e" font-weight="700">ТВ-зона</tspan> (метка «ТВ»): центр 1,32 м от СЗ угла, ТВ навесной (ниши нет)</text>
+    <text x="0" y="90">Запад · дверь в кухню <tspan font-weight="700">850×2000</tspan> (2,80–3,65 м от СЗ угла)</text>
+    <text x="0" y="116">Север · окно <tspan font-weight="700">2140×1400</tspan>, подоконник 600 (0,80–2,94)</text>
+    <text x="0" y="142">Восток · окна <tspan font-weight="700">1320×1400</tspan> (2,73–3,99) и <tspan font-weight="700">820×1400</tspan> (1,10–1,92), подоконник 600</text>
+    <text x="0" y="170">Антресоль над западной полосой x&lt;1370: потолок <tspan font-weight="700">2700</tspan>, пол 2-го этажа <tspan font-weight="700">+3000</tspan></text>
+    <text x="0" y="196">Световой колодец: остальной зал открыт до ~<tspan font-weight="700">5700</tspan>, кровля наклонная над сев. частью</text>
+
+    <text x="0" y="248" font-size="17" font-weight="700" fill="#37312a">РАСКЛАДКА И ЭРГОНОМИКА</text>
+    <line x1="0" y1="260" x2="660" y2="260" stroke="#cfc4b2"/>
+    <text x="0" y="286">• Диван 2900×1050 спинкой к лестнице (восток), лицом к ТВ (запад) — в светлом колодце</text>
+    <text x="0" y="312">• Расстояние сидящих до ТВ <tspan font-weight="700">2,45 м</tspan> (комфортно для 65″); ось дивана смещена от ТВ-оси всего на 28 см</text>
+    <text x="0" y="338">• Красный угол — СВ, справа от арки-входа (юго-восток занят забежными ступенями)</text>
+    <text x="0" y="364">• Кухня: проход у запада не уже 0,72 м; подход к двери свободен</text>
+    <text x="0" y="390">• Лестница: вход вдоль вост. стены, коридор 0,9+ м; диван не мешает</text>
+    <text x="0" y="416">• Шкаф под маршем юга (2650×550), консоль при входе, скамья у окна, ковёр 2900×2750</text>
+    <text x="0" y="450" fill="#7c4340" font-style="italic">Ориентация: ТВ-стена по obj — ЗАПАДНАЯ (4,67 м). Стены 4,80 м — север/юг (окно и арка). Габарит подтверждён: 481×467.</text>
+    <text x="0" y="476" fill="#5f6b76" font-style="italic">Стиль: светлый дуб, графит, латунь; акценты — бутылочно-зелёное кресло, терракота подушек; LED у ступеней и антресольных спотов.</text>
+  </g>
+
+  <text x="28" y="1130" font-size="11" fill="#8a8378">Источник: зал.obj (см) — интерьер X 49..530, Z −356..−823 → 4810×4670; рендеры v1/v2 той же сцены совпадают</text>
+</svg>
