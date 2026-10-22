@@ -17,6 +17,8 @@
   .tbl{border-collapse:collapse;margin-top:4px}
   .tbl td{font-size:11px;color:#cfc6ba;padding:0 8px 0 0;white-space:nowrap}
   .tbl b{color:#f0e9df}
+  .st{position:fixed;right:14px;top:14px;display:flex;flex-direction:column;gap:6px;z-index:5}
+  .st button{padding:7px 12px;border:0;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;text-align:left}
 </style>
 </head>
 <body>
@@ -31,6 +33,14 @@
     <tr><td>Красный угол</td><td><b>СВ — правый от арки угол</b></td></tr>
     <tr><td>Лестница</td><td><b>4×220 + 11×180 + 140, проступь 300</b></td></tr>
   </table>
+  <p style="margin-top:3px">Стиль: <b id="stname">Скан-минимализм</b></p>
+</div>
+
+<div class="st" id="stylebar">
+  <button class="stb" data-i="0" onclick="applyStyle(0)">Скан-минимализм</button>
+  <button class="stb" data-i="1" onclick="applyStyle(1)">Тёплый лофт</button>
+  <button class="stb" data-i="2" onclick="applyStyle(2)">Тихая роскошь</button>
+  <button class="stb" data-i="3" onclick="applyStyle(3)">Бохо-терракота</button>
 </div>
 
 <div class="bar">
@@ -78,6 +88,17 @@ function planks(repX,repY,base){
   const t=new THREE.CanvasTexture(cv);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(repX,repY);
   t.anisotropy=8;return t;
 }
+function brickTex(){
+  const cv=document.createElement('canvas');cv.width=512;cv.height=256;const g=cv.getContext('2d');
+  g.fillStyle='#c3b8a8';g.fillRect(0,0,512,256);
+  const bw=52,bh=24;
+  for(let r=0;r<11;r++)for(let c=-1;c<11;c++){
+    const x=c*bw+(r%2?bw/2:0),y=r*bh,hgt=128+((r*37+c*61)%64);
+    g.fillStyle='rgb('+hgt+','+Math.round(hgt*.55)+','+Math.round(hgt*.42)+')';
+    g.fillRect(x+2,y+2,bw-4,bh-4);}
+  const t=new THREE.CanvasTexture(cv);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(2.2,2.0);
+  t.anisotropy=8;return t;
+}
 const M={
   wall:new THREE.MeshStandardMaterial({color:0xefe9dd,roughness:.92,side:THREE.DoubleSide}),
   wallN:new THREE.MeshStandardMaterial({color:0xe4ddd0,roughness:.92,side:THREE.DoubleSide}),
@@ -101,8 +122,15 @@ const M={
   led:new THREE.MeshStandardMaterial({color:0xffc98c,emissive:0xffb066,emissiveIntensity:1.6}),
   glass:new THREE.MeshStandardMaterial({color:0xbcd8e2,transparent:true,opacity:.16,roughness:.1,metalness:.1,side:THREE.DoubleSide}),
   bulb:new THREE.MeshStandardMaterial({color:0xffe9c8,emissive:0xffd9a0,emissiveIntensity:1.3}),
-  hall:new THREE.MeshStandardMaterial({color:0xd8d2c6,roughness:.95})
+  hall:new THREE.MeshStandardMaterial({color:0xd8d2c6,roughness:.95}),
+  frame:new THREE.MeshStandardMaterial({color:0x2f3237,roughness:.45,metalness:.35}),
+  chair:new THREE.MeshStandardMaterial({color:0x3f5b4e,roughness:.85}),
+  curtain:new THREE.MeshStandardMaterial({color:0xefe7db,roughness:1}),
+  pouf:new THREE.MeshStandardMaterial({color:0xc2a06a,roughness:.95}),
+  brick:new THREE.MeshStandardMaterial({map:brickTex(),roughness:.95})
 };
+/* ссылки на объекты, чьи материалы переключает applyStyle */
+const STYREF={pillows:[],globes:[],curtain:null,pouf:null,brick:null};
 
 function box(w,h,d,x,y,z,mat,cs,rs){
   const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
@@ -148,6 +176,29 @@ box(.82,.04,.16,4.73,.60,3.16,M.riser);            // восток малый
  const g2=new THREE.Mesh(new THREE.PlaneGeometry(1.24,1.32),gm);g2.rotation.y=Math.PI/2;g2.position.set(4.76,1.30,1.28);scene.add(g2);
  const g3=new THREE.Mesh(new THREE.PlaneGeometry(.74,1.32),gm);g3.rotation.y=Math.PI/2;g3.position.set(4.76,1.30,3.16);scene.add(g3);}
 
+/* ---- оконные РАМЫ: профиль + импосты (цв. по стилю, материал M.frame) ---- */
+{function fb(w,h,d,x,y,z){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),M.frame);m.position.set(x,y,z);m.castShadow=false;m.receiveShadow=true;scene.add(m);return m;}
+ /* северное 2140: боковые, верх/низ + центральный импост */
+ fb(.06,1.40,.07,.83,1.30,.07);fb(.06,1.40,.07,2.91,1.30,.07);
+ fb(2.14,.06,.07,1.87,.63,.07);fb(2.14,.06,.07,1.87,1.97,.07);
+ fb(.05,1.34,.055,1.87,1.30,.07);fb(.05,.60,.045,1.87,1.60,.07);fb(.05,.60,.045,1.87,1.00,.07);
+ /* восточное 1320 + импост */
+ fb(.07,1.40,.06,4.74,1.30,.65);fb(.07,1.40,.06,4.74,1.30,1.91);
+ fb(.07,.06,1.32,4.74,.63,1.28);fb(.07,.06,1.32,4.74,1.97,1.28);
+ fb(.055,1.34,.05,4.74,1.30,1.28);
+ /* восточное 820 */
+ fb(.07,1.40,.06,4.74,1.30,2.78);fb(.07,1.40,.06,4.74,1.30,3.54);
+ fb(.07,.06,.82,4.74,.63,3.16);fb(.07,.06,.82,4.74,1.97,3.16);
+ /* дверной проём кухни: наличник по откосам */
+ fb(.07,2.00,.06,-.035,1.00,2.83);fb(.07,2.00,.06,-.035,1.00,3.62);fb(.07,.06,.85,-.035,1.97,3.225);
+ /* верхнее окно антресоля */
+ fb(.06,1.30,.07,-.035,3.95,2.22);fb(.06,1.30,.07,-.035,3.95,3.18);fb(.06,.06,1.00,-.035,4.58,2.70);fb(.06,.06,1.00,-.035,3.32,2.70);
+ /* арка: дубовые наличники по бокам */
+ [1.20,2.59].forEach(x=>{const m=new THREE.Mesh(new THREE.BoxGeometry(.06,2.2,.06),M.oakD);m.position.set(x,1.1,4.70);scene.add(m);});
+ /* порог арки */
+ box(1.45,.02,.35,1.895,.01,4.51,M.oakD);
+}
+
 /* ---- пол, тёплая доска ---- */
 {const f=new THREE.Mesh(new THREE.BoxGeometry(W,.02,D),M.floor);f.position.set(W/2,-0.01,D/2);f.receiveShadow=true;scene.add(f);
  box(6.2,.01,.35,2.4,-0.011,4.84,M.oakD);          // порожек у юга
@@ -168,43 +219,47 @@ box(1.57,.30,D,.585,2.85,2.335,M.slabC);
  const cap=new THREE.Mesh(new THREE.BoxGeometry(5.41,.06,D+0.3-1.5),M.slabC);
  cap.position.set(2.405,TOP+.03,1.5+(D+.3-1.5)/2);scene.add(cap);}
 
-/* ---------- лестница (точные ступени из obj) ---------- */
+/* ---------- лестница ПОДВЕСНАЯ: консольные ступени из obj ---------- */
 const stair=new THREE.Group();scene.add(stair);
-function tread(x0,x1,z0,z1,top){
+function tread(x0,x1,z0,z1,top,nose){ /* без подступёнков; nose: 'zn'|'zp'|'xn'|'xp'|false */
   const w=x1-x0,d=z1-z0;
-  const b=new THREE.Mesh(new THREE.BoxGeometry(w,top-.045,d),M.riser);
-  b.position.set((x0+x1)/2,(top-.045)/2,(z0+z1)/2);b.castShadow=true;b.receiveShadow=true;stair.add(b);
-  const t=new THREE.Mesh(new THREE.BoxGeometry(w,.045,d),M.oak);
-  t.position.set((x0+x1)/2,top-.0225,(z0+z1)/2);t.castShadow=true;stair.add(t);
+  const t=new THREE.Mesh(new THREE.BoxGeometry(w,.055,d),M.oak);
+  t.position.set((x0+x1)/2,top-.0275,(z0+z1)/2);t.castShadow=true;t.receiveShadow=true;stair.add(t);
+  if(nose){const l=nose[0]==='z'
+    ? new THREE.Mesh(new THREE.BoxGeometry(w,.012,.045),M.led)
+    : new THREE.Mesh(new THREE.BoxGeometry(.045,.012,d),M.led);
+    l.position.set(nose==='xn'?(x0+.028):(nose==='xp'?(x1-.028):(x0+x1)/2),top-.068,
+      nose==='zn'?(z0+.028):(nose==='zp'?(z1-.028):(z0+z1)/2));
+    stair.add(l);}
 }
 /* марш по востоку, подъём к югу */
-tread(3.91,4.81,2.845,3.145,.21);tread(3.91,4.81,3.145,3.445,.43);
-tread(3.91,4.81,3.445,3.745,.65);tread(3.91,4.81,3.745,4.045,.87);
+tread(3.91,4.81,2.845,3.145,.21,'zn');tread(3.91,4.81,3.145,3.445,.43,'zn');
+tread(3.91,4.81,3.445,3.745,.65,'zn');tread(3.91,4.81,3.745,4.045,.87,'zn');
 /* забежные в ЮВ углу: угловая (трапеция) + 3 клина */
 {const sh=new THREE.Shape();
  sh.moveTo(3.91,-4.045);sh.lineTo(4.81,-4.045);sh.lineTo(4.81,-4.345);sh.lineTo(4.25,-4.345);sh.closePath();
- const g=new THREE.ExtrudeGeometry(sh,{depth:1.05,bevelEnabled:false});
- const m=new THREE.Mesh(g,M.riser);m.rotation.x=-Math.PI/2;m.position.y=1.05;stair.add(m);
- const t=new THREE.Mesh(g,M.oak);t.rotation.x=-Math.PI/2;t.position.y=1.05;stair.add(t);}
+ const g=new THREE.ExtrudeGeometry(sh,{depth:.055,bevelEnabled:false});
+ const m=new THREE.Mesh(g,M.oak);m.rotation.x=-Math.PI/2;m.position.y=1.05-.055;stair.add(m);}
 function wedge(x0,x1,z0,z1,top){
   const sh=new THREE.Shape();sh.moveTo(x0,-z0);sh.lineTo(x1,-z0);sh.lineTo(x1,-z1);sh.lineTo(x0,-z1);sh.closePath();
-  const g=new THREE.ExtrudeGeometry(sh,{depth:top,bevelEnabled:false});
-  const m=new THREE.Mesh(g,M.riser);m.rotation.x=-Math.PI/2;m.position.y=top;stair.add(m);
-  const t=new THREE.Mesh(g,M.oak);t.rotation.x=-Math.PI/2;t.position.y=top;stair.add(t);
+  const g=new THREE.ExtrudeGeometry(sh,{depth:.055,bevelEnabled:false});
+  const m=new THREE.Mesh(g,M.oak);m.rotation.x=-Math.PI/2;m.position.y=top-.055;stair.add(m);
 }
 wedge(3.9095,4.8095,4.0449,4.6649,1.23);
 wedge(3.909,4.6595,4.0448,4.6648,1.41);
 wedge(3.9085,4.2895,4.0447,4.6647,1.59);
+/* стальная опора забежного узла (тонкая, в углу) */
+{const col=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,1.60,14),M.frame);
+ col.position.set(4.74,.80,4.60);col.castShadow=true;stair.add(col);
+ const fin=new THREE.Mesh(new THREE.BoxGeometry(.40,.02,.86),M.frame); /* скрытый косынка под площадкой */
+ fin.position.set(1.57,2.86,4.22);fin.rotation.z=.18;stair.add(fin);}
 /* марш по югу, подъём к западу */
 const fz=[[3.61,3.91,1.77],[3.31,3.61,1.95],[3.01,3.31,2.13],[2.71,3.01,2.31],
           [2.41,2.71,2.49],[2.11,2.41,2.67],[1.81,2.11,2.85]];
-fz.forEach(s=>tread(s[0],s[1],3.765,4.665,s[2]));
-/* площадка у антресоли */
-tread(1.37,1.81,3.765,4.665,2.99);
+fz.forEach(s=>tread(s[0],s[1],3.765,4.665,s[2],'xp'));
+/* площадка у антресоли (консоль от плиты) */
+tread(1.37,1.81,3.765,4.665,2.99,false);
 /* светодиодная лента на проступях */
-function led(x0,x1,z0,z1,y){const m=new THREE.Mesh(new THREE.BoxGeometry(.05,.012,z1-z0),M.led);m.position.set(x0-.025,y,(z0+z1)/2);stair.add(m);}
-[.21,.43,.65,.87].forEach((h,i)=>led(3.91,3.96,2.845+i*.3,3.145+i*.3,h));
-[1.77,1.95,2.13,2.31,2.49,2.67,2.85].forEach((h,i)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(fz[i][0]===3.61?.30:.30,.012,.05),M.led);m.position.set((fz[i][0]+fz[i][1])/2,h-.02,3.785);stair.add(m);});
 
 /* ---------- шкаф под маршем по югу ---------- */
 [[1.95,2.45,2.35],[2.45,3.00,2.08],[3.00,3.55,1.72]].forEach(b=>{
@@ -220,9 +275,9 @@ function led(x0,x1,z0,z1,y){const m=new THREE.Mesh(new THREE.BoxGeometry(.05,.01
  bx(.26,.95,2.90,.92,.56,1.45,M.sofa);                // спинка (к востоку)
  bx(.80,.34,.26,.515,.52,.13,M.sofa);                 // подлокотник север
  bx(.80,.34,.26,.515,.52,2.77,M.sofa);                // подлокотник юг
- [[.62,1.02,M.rust],[.58,1.52,M.mus],[.66,2.02,M.ivory],[.40,.60,M.sofaL]].forEach((p,i)=>{
-   const q=new THREE.Mesh(new THREE.BoxGeometry(.17,.42,.42),p[2]);
-   q.position.set(p[0],.66,p[1]);q.rotation.y=.45-(i%2)*.3;q.rotation.x=-.14+i*.07;q.castShadow=true;s.add(q);});
+ [[.62,1.02],[.58,1.52],[.66,2.02],[.40,.60]].forEach((p,i)=>{
+   const q=new THREE.Mesh(new THREE.BoxGeometry(.17,.42,.42),M.rust);
+   q.position.set(p[0],.66,p[1]);q.rotation.y=.45-(i%2)*.3;q.rotation.x=-.14+i*.07;q.castShadow=true;STYREF.pillows.push(q);s.add(q);});
  [[.18,.14],[2.72,.14],[.18,2.76],[2.72,2.76]].forEach(l=>{
    const c=new THREE.Mesh(new THREE.CylinderGeometry(.02,.015,.11,10),M.brass);c.position.set(l[0],.055,l[1]);c.castShadow=true;s.add(c);});}
 
@@ -270,10 +325,10 @@ function led(x0,x1,z0,z1,y){const m=new THREE.Mesh(new THREE.BoxGeometry(.05,.01
 /* ---------- кресло СВ + торшер (вид на ТВ) ---------- */
 {const g=new THREE.Group();g.position.set(3.42,0,.62);g.rotation.y=-.79;scene.add(g);
  const bx=(w,h,d,x,y,z,m)=>{const q=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);q.position.set(x,y,z);q.castShadow=true;q.receiveShadow=true;g.add(q);return q;};
- bx(.80,.14,.78,0,.36,0,M.green);
- bx(.78,.42,.06,0,.60,-.38,M.green);
- bx(.80,.34,.05,0,.53,.36,M.green);
- bx(.06,.52,.76,-.42,.5,0,M.green);bx(.06,.52,.76,.42,.5,0,M.green);
+ bx(.80,.14,.78,0,.36,0,M.chair);
+ bx(.78,.42,.06,0,.60,-.38,M.chair);
+ bx(.80,.34,.05,0,.53,.36,M.chair);
+ bx(.06,.52,.76,-.42,.5,0,M.chair);bx(.06,.52,.76,.42,.5,0,M.chair);
  [[-.3,-.3],[.3,-.3],[-.3,.3],[.3,.3]].forEach(p=>{const c=new THREE.Mesh(new THREE.CylinderGeometry(.018,.013,.29,10),M.brass);c.position.set(p[0],.145,p[1]);c.castShadow=true;g.add(c);});
  const pole=new THREE.Mesh(new THREE.CylinderGeometry(.013,.013,1.5,10),M.brass);pole.position.set(2.80,.75,.30);scene.add(pole);
  const shd=new THREE.Mesh(new THREE.CylinderGeometry(.14,.17,.26,18,1,true),new THREE.MeshStandardMaterial({color:0xe8dcc6,roughness:1,side:THREE.DoubleSide}));
@@ -305,7 +360,7 @@ plant(2.62,.16,1.35);  // север, между скамьёй и кресло�
 /* ---------- подвесы над столом + свет ---------- */
 {[2.15,2.45].forEach((h,i)=>{
    const cord=new THREE.Mesh(new THREE.CylinderGeometry(.004,.004,TOP-h,6),M.dark);cord.position.set(1.60+i*.32,(TOP+h)/2,1.60);scene.add(cord);
-   const gl=new THREE.Mesh(new THREE.SphereGeometry(i?.11:.14,18,14),new THREE.MeshStandardMaterial({color:0xffe6bf,emissive:0xffd9a0,emissiveIntensity:.9,roughness:.2}));gl.position.set(1.60+i*.32,h,1.60);scene.add(gl);
+   const gl=new THREE.Mesh(new THREE.SphereGeometry(i?.11:.14,18,14),new THREE.MeshStandardMaterial({color:0xffe6bf,emissive:0xffd9a0,emissiveIntensity:.9,roughness:.2}));gl.position.set(1.60+i*.32,h,1.60);STYREF.globes.push(gl);scene.add(gl);
    const pl=new THREE.PointLight(0xffd9a0,.55,4.2);pl.position.set(1.60+i*.32,h-.05,1.60);scene.add(pl);});
  // споты антресольной полосы
  for(let i=0;i<5;i++){const d=new THREE.Mesh(new THREE.CircleGeometry(.045,14),M.bulb);
@@ -342,6 +397,68 @@ function label(tex,x,y,z,s){
 label({text:'ПРИХОЖАЯ'},1.9,1.15,4.60,.34);
 label({text:'КУХНЯ'},.30,1.45,3.22,.28);
 label({text:'ТВ',color:'#cfd2d8',flat:true},.16,1.44,1.32,.26);
+
+/* ---------- текстиль/акценты для переключения стилей ---------- */
+{const cg=new THREE.Group();scene.add(cg);STYREF.curtain=cg;
+ [0.72,3.02].forEach(x=>{const m=new THREE.Mesh(new THREE.BoxGeometry(.36,2.50,.08),M.curtain);m.position.set(x,1.28,.15);m.castShadow=true;cg.add(m);});
+ const rod=new THREE.Mesh(new THREE.CylinderGeometry(.012,.012,2.80,10),M.brass);rod.rotation.x=Math.PI/2;rod.position.set(1.87,2.56,.15);cg.add(rod);
+ [.55,3.19].forEach(x=>{const k=new THREE.Mesh(new THREE.SphereGeometry(.025,8,8),M.brass);k.position.set(x,2.56,.15);cg.add(k);});}
+{const p=new THREE.Group();p.position.set(1.55,0,.78);scene.add(p);STYREF.pouf=p;
+ const base=new THREE.Mesh(new THREE.CylinderGeometry(.30,.32,.34,20),M.pouf);base.position.y=.17;base.castShadow=true;p.add(base);
+ [.10,.21].forEach(h=>{const r=new THREE.Mesh(new THREE.TorusGeometry(.305,.014,8,24),M.oakD);r.rotation.x=Math.PI/2;r.position.y=h;p.add(r);});}
+{const bp=new THREE.Mesh(new THREE.PlaneGeometry(2.15,1.75),M.brick);bp.rotation.y=Math.PI;bp.position.set(3.725,.875,4.664);bp.receiveShadow=true;scene.add(bp);STYREF.brick=bp;}
+function rugT(s){
+  const cv=document.createElement('canvas');cv.width=256;cv.height=310;const g=cv.getContext('2d');
+  g.fillStyle=s.rug;g.fillRect(0,0,256,310);
+  if(s.rugPat){g.fillStyle='rgba(122,78,52,.45)';for(let y=10;y<306;y+=28)g.fillRect(0,y,256,13);}
+  g.strokeStyle='rgba(90,75,55,.45)';g.lineWidth=10;g.strokeRect(9,9,238,292);
+  const t=new THREE.CanvasTexture(cv);t.anisotropy=8;return t;
+}
+/* ---------- 4 стиля ---------- */
+const STYLES=[
+ {name:'Скан-минимализм',wall:0xefe9dd,floor:'#c9a468',oak:'#c9a468',oakD:'#a97e44',
+  sofa:0x49525f,sofaL:0x5d6774,pillows:[0xb3593f,0xcaa14e,0xe3dccd,0x5d6774],
+  chair:0x3f5b4e,brass:0xb08d57,frame:0x2f3237,rug:'#e2dac9',
+  led:0xffb066,ledInt:1.6,bulb:0xffd9a0,glob:0xffe6bf,
+  curtain:0,pouf:0,brick:0},
+ {name:'Тёплый лофт',wall:0xdad5cc,floor:'#7d5c3e',oak:'#8a6644',oakD:'#5d462e',
+  sofa:0x3c3f45,sofaL:0x4a4e55,pillows:[0x9a5a33,0xd8d2c5,0x33363b,0xb3714b],
+  chair:0x54483c,brass:0x8d9298,frame:0x22252a,rug:'#8f8b84',
+  led:0xffc37a,ledInt:1.4,bulb:0xffc98c,glob:0x2a2c30,
+  curtain:0,pouf:0,brick:1},
+ {name:'Тихая роскошь',wall:0xe6ded1,floor:'#d9bd93',oak:'#d9bd93',oakD:'#b08a55',
+  sofa:0xd6cec0,sofaL:0xc6bcab,pillows:[0x6f6f52,0xb08d57,0xece5d7,0xb9a78e],
+  chair:0x4f5a4a,brass:0xc0a05f,frame:0x4a4438,rug:'#efe7da',
+  led:0xffd2a0,ledInt:1.1,bulb:0xfff1dc,glob:0xfff1dc,
+  curtain:0xefe7db,pouf:1,brick:0},
+ {name:'Бохо-терракота',wall:0xf0e6d8,floor:'#cfa26a',oak:'#cfa26a',oakD:'#a97e44',
+  sofa:0xb56b4f,sofaL:0xc98463,pillows:[0xcaa14e,0x6f7a4f,0xd8c49e,0xa8552f],
+  chair:0x6f7a4f,brass:0xb08d57,frame:0x8a6b45,rug:'#ded2ba',rugPat:1,
+  led:0xffb884,ledInt:1.4,bulb:0xffe0b0,glob:0xe3cb9a,
+  curtain:0xe8dcc6,pouf:1,brick:0}
+];
+function applyStyle(i){
+  const s=STYLES[i];
+  [M.wall,M.wallN,M.slabC].forEach(m=>m.color.setHex(s.wall));
+  M.floor.map.dispose();M.floor.map=planks(4.2,4.1,s.floor);M.floor.needsUpdate=true;
+  M.oak.map.dispose();M.oak.map=planks(2,2,s.oak);M.oak.needsUpdate=true;
+  M.oakD.map.dispose();M.oakD.map=planks(1,1,s.oakD);M.oakD.needsUpdate=true;
+  M.sofa.color.setHex(s.sofa);M.sofaL.color.setHex(s.sofaL);
+  STYREF.pillows.forEach((p,k)=>p.material.color.setHex(s.pillows[k%s.pillows.length]));
+  M.chair.color.setHex(s.chair);M.brass.color.setHex(s.brass);M.frame.color.setHex(s.frame);
+  M.rug.map.dispose();M.rug.map=rugT(s);M.rug.needsUpdate=true;
+  M.led.color.setHex(s.led);M.led.emissive.setHex(s.led);M.led.emissiveIntensity=s.ledInt;
+  M.bulb.color.setHex(s.bulb);M.bulb.emissive.setHex(s.bulb);
+  STYREF.globes.forEach(g=>{g.material.color.setHex(s.glob);g.material.emissive.setHex(s.glob);
+    g.material.emissiveIntensity=(i===1?.0:.9);g.material.needsUpdate=true;});
+  STYREF.curtain.visible=!!s.curtain;if(s.curtain)M.curtain.color.setHex(s.curtain);
+  STYREF.pouf.visible=!!s.pouf;
+  STYREF.brick.visible=!!s.brick;
+  document.getElementById('stname').textContent=s.name;
+  document.querySelectorAll('.stb').forEach(b=>{b.style.background=b.dataset.i==String(i)?'#c98463':'rgba(240,233,223,.92)';b.style.color=b.dataset.i==String(i)?'#fff':'#20242a';});
+  window.STYLE=i;
+}
+applyStyle(0);
 
 /* ---------- камеры ---------- */
 const P=[
