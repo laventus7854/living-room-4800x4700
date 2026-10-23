@@ -33,7 +33,7 @@
     <tr><td>Красный угол</td><td><b>СВ — правый от арки угол</b></td></tr>
     <tr><td>Лестница</td><td><b>4×220 + 11×180 + 140, проступь 300</b></td></tr>
   </table>
-  <p style="margin-top:3px">Стиль: <b id="stname">Скан-минимализм</b></p>
+  <p style="margin-top:3px">Стиль: <b id="stname">Скан-минимализм</b> · расстановка: <b id="modename">гостиная</b></p>
 </div>
 
 <div class="st" id="stylebar">
@@ -44,6 +44,9 @@
 </div>
 
 <div class="bar">
+  <button class="mb" data-m="0" onclick="applyMode(0)">диван к ТВ</button>
+  <button class="mb" data-m="1" onclick="applyMode(1)">у окна + танцпол</button>
+  <span style="opacity:.4">|</span>
   <button onclick="go(0)">от входа</button>
   <button onclick="go(1)">гостиная</button>
   <button onclick="go(2)">ТВ-стена</button>
@@ -131,6 +134,9 @@ const M={
 };
 /* ссылки на объекты, чьи материалы переключает applyStyle */
 const STYREF={pillows:[],globes:[],curtain:null,pouf:null,brick:null};
+/* расстановки: a = «гостиная» (диван к ТВ), b = «танцпол» (диван у окна) */
+const LAY={a:[],b:[]};
+const REF={};
 
 function box(w,h,d,x,y,z,mat,cs,rs){
   const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat);
@@ -261,14 +267,8 @@ fz.forEach(s=>tread(s[0],s[1],3.765,4.665,s[2],'xp'));
 tread(1.37,1.81,3.765,4.665,2.99,false);
 /* светодиодная лента на проступях */
 
-/* ---------- шкаф под маршем по югу ---------- */
-[[1.95,2.45,2.35],[2.45,3.00,2.08],[3.00,3.55,1.72]].forEach(b=>{
-  box(.55,b[2],.55,(b[0]+b[1])/2,b[2]/2,4.325,M.oakD,true);
-  box(.02,.9,.04,(b[0]+b[1])/2,.55,4.04,M.brass);
-});
-
 /* ---------- диван 2900×1050 → лицом к ТВ (запад) ---------- */
-{const s=new THREE.Group();s.position.set(2.45,0,.30);scene.add(s);
+{const s=new THREE.Group();s.position.set(2.45,0,.30);scene.add(s);LAY.a.push(s);REF.sofa=s;
  const bx=(w,h,d,x,y,z,m)=>{const q=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);q.position.set(x,y,z);q.castShadow=true;q.receiveShadow=true;s.add(q);return q;};
  bx(1.05,.28,2.90,.525,.30,1.45,M.sofa);              // корпус
  bx(.76,.20,2.68,.62,.415,1.45,M.sofaL);              // подушка-сиденье
@@ -281,13 +281,14 @@ tread(1.37,1.81,3.765,4.665,2.99,false);
  [[.18,.14],[2.72,.14],[.18,2.76],[2.72,2.76]].forEach(l=>{
    const c=new THREE.Mesh(new THREE.CylinderGeometry(.02,.015,.11,10),M.brass);c.position.set(l[0],.055,l[1]);c.castShadow=true;s.add(c);});}
 
-/* ---------- стол, ковёр ---------- */
-{const rug=new THREE.Mesh(new THREE.BoxGeometry(2.10,.012,2.75),M.rug);rug.position.set(2.25,.007,1.68);rug.receiveShadow=true;scene.add(rug);
- const top=new THREE.Mesh(new THREE.CylinderGeometry(.475,.475,.05,40),M.oak);top.position.set(1.60,.345,1.60);top.castShadow=true;scene.add(top);
- const col=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,.30,14),M.brass);col.position.set(1.60,.17,1.60);scene.add(col);
- const bs=new THREE.Mesh(new THREE.CylinderGeometry(.20,.24,.03,26),M.brass);bs.position.set(1.60,.015,1.60);scene.add(bs);
- const v1=new THREE.Mesh(new THREE.SphereGeometry(.055,16,12),M.pot);v1.position.set(1.50,.42,1.50);v1.scale.y=.8;scene.add(v1);
- const b1=new THREE.Mesh(new THREE.BoxGeometry(.22,.04,.16),M.rust);b1.position.set(1.72,.40,1.66);b1.rotation.y=.4;scene.add(b1);}
+/* ---------- стол, ковёр (вариант «гостиная») ---------- */
+{const lt=new THREE.Group();scene.add(lt);LAY.a.push(lt);
+ const rug=new THREE.Mesh(new THREE.BoxGeometry(2.10,.012,2.75),M.rug);rug.position.set(2.25,.007,1.68);rug.receiveShadow=true;lt.add(rug);
+ const top=new THREE.Mesh(new THREE.CylinderGeometry(.475,.475,.05,40),M.oak);top.position.set(1.60,.345,1.60);top.castShadow=true;lt.add(top);
+ const col=new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,.30,14),M.brass);col.position.set(1.60,.17,1.60);lt.add(col);
+ const bs=new THREE.Mesh(new THREE.CylinderGeometry(.20,.24,.03,26),M.brass);bs.position.set(1.60,.015,1.60);lt.add(bs);
+ const v1=new THREE.Mesh(new THREE.SphereGeometry(.055,16,12),M.pot);v1.position.set(1.50,.42,1.50);v1.scale.y=.8;lt.add(v1);
+ const b1=new THREE.Mesh(new THREE.BoxGeometry(.22,.04,.16),M.rust);b1.position.set(1.72,.40,1.66);b1.rotation.y=.4;lt.add(b1);}
 
 /* ---------- ТВ-зона на западе ---------- */
 {const cons=new THREE.Mesh(new THREE.BoxGeometry(.35,.09,1.80),M.oakD);cons.position.set(.20,.455,1.325);cons.castShadow=true;scene.add(cons);
@@ -316,24 +317,27 @@ tread(1.37,1.81,3.765,4.665,2.99,false);
  const lb=new THREE.Mesh(new THREE.SphereGeometry(.045,14,10),M.bulb);lb.position.set(4.40,1.28,.30);scene.add(lb);
  const lmp=new THREE.PointLight(0xffb066,.6,2.2);lmp.position.set(4.40,1.24,.32);scene.add(lmp);}
 
-/* ---------- скамья-подоконник у северного окна ---------- */
-{const b=new THREE.Mesh(new THREE.BoxGeometry(1.40,.07,.34),M.oak);b.position.set(1.72,.42,.19);b.castShadow=true;scene.add(b);
- const l=new THREE.Mesh(new THREE.BoxGeometry(1.34,.34,.28),M.oakD);l.position.set(1.72,.24,.18);l.castShadow=true;scene.add(l);
+/* ---------- скамья-подоконник у северного окна (вариант «гостиная») ---------- */
+{const bg=new THREE.Group();scene.add(bg);LAY.a.push(bg);REF.bench=bg;
+ const b=new THREE.Mesh(new THREE.BoxGeometry(1.40,.07,.34),M.oak);b.position.set(1.72,.42,.19);b.castShadow=true;bg.add(b);
+ const l=new THREE.Mesh(new THREE.BoxGeometry(1.34,.34,.28),M.oakD);l.position.set(1.72,.24,.18);l.castShadow=true;bg.add(l);
  [[1.15,.30,M.rust],[2.05,.45,M.mus]].forEach((p,i)=>{
-   const q=new THREE.Mesh(new THREE.BoxGeometry(.18,.34,.20),p[2]);q.position.set(p[0],.55,.17);q.rotation.z=.12*(i?-1:1);q.castShadow=true;scene.add(q);});}
+   const q=new THREE.Mesh(new THREE.BoxGeometry(.18,.34,.20),p[2]);q.position.set(p[0],.55,.17);q.rotation.z=.12*(i?-1:1);q.castShadow=true;bg.add(q);});}
 
 /* ---------- кресло СВ + торшер (вид на ТВ) ---------- */
-{const g=new THREE.Group();g.position.set(3.42,0,.62);g.rotation.y=-.79;scene.add(g);
+{const g=new THREE.Group();g.position.set(3.28,0,.58);g.rotation.y=-.79;scene.add(g);LAY.a.push(g);REF.chair=g;
  const bx=(w,h,d,x,y,z,m)=>{const q=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);q.position.set(x,y,z);q.castShadow=true;q.receiveShadow=true;g.add(q);return q;};
  bx(.80,.14,.78,0,.36,0,M.chair);
  bx(.78,.42,.06,0,.60,-.38,M.chair);
  bx(.80,.34,.05,0,.53,.36,M.chair);
  bx(.06,.52,.76,-.42,.5,0,M.chair);bx(.06,.52,.76,.42,.5,0,M.chair);
- [[-.3,-.3],[.3,-.3],[-.3,.3],[.3,.3]].forEach(p=>{const c=new THREE.Mesh(new THREE.CylinderGeometry(.018,.013,.29,10),M.brass);c.position.set(p[0],.145,p[1]);c.castShadow=true;g.add(c);});
- const pole=new THREE.Mesh(new THREE.CylinderGeometry(.013,.013,1.5,10),M.brass);pole.position.set(2.80,.75,.30);scene.add(pole);
+ [[-.3,-.3],[.3,-.3],[-.3,.3],[.3,.3]].forEach(p=>{const c=new THREE.Mesh(new THREE.CylinderGeometry(.018,.013,.29,10),M.brass);c.position.set(p[0],.145,p[1]);c.castShadow=true;g.add(c);});}
+/* торшер — у южного подлокотника дивана (только вариант «гостиная») */
+{const lg=new THREE.Group();lg.position.set(3.65,0,3.42);scene.add(lg);LAY.a.push(lg);
+ const pole=new THREE.Mesh(new THREE.CylinderGeometry(.013,.013,1.5,10),M.brass);pole.position.y=.75;pole.castShadow=true;lg.add(pole);
  const shd=new THREE.Mesh(new THREE.CylinderGeometry(.14,.17,.26,18,1,true),new THREE.MeshStandardMaterial({color:0xe8dcc6,roughness:1,side:THREE.DoubleSide}));
- shd.position.set(2.80,1.62,.30);scene.add(shd);
- const ll=new THREE.PointLight(0xffd9a8,.5,3.6);ll.position.set(2.80,1.5,.30);scene.add(ll);}
+ shd.position.y=1.62;lg.add(shd);
+ const ll=new THREE.PointLight(0xffd9a8,.5,3.6);ll.position.y=1.5;lg.add(ll);}
 
 /* ---------- растения ---------- */
 function plant(x,z,h){
@@ -342,9 +346,11 @@ function plant(x,z,h){
   const st=new THREE.Mesh(new THREE.CylinderGeometry(.02,.03,h*.4,8),new THREE.MeshStandardMaterial({color:0x5a4632,roughness:1}));st.position.y=h*.4;g.add(st);
   for(let i=0;i<4;i++){const lf=new THREE.Mesh(new THREE.SphereGeometry(h*.18,10,8),M.leaf);
     lf.position.set(Math.cos(i*1.7)*h*.09,h*.6+i*h*.09,Math.sin(i*1.7)*h*.09);lf.scale.y=1.35;lf.castShadow=true;g.add(lf);}
+  return g;
 }
-plant(.45,2.42,1.65);  // запад, у прохода к кухне
-plant(2.62,.16,1.35);  // север, между скамьёй и креслом
+plant(.45,2.42,1.65);                 // запад, у прохода к кухне (в обеих расстановках)
+LAY.a.push(plant(2.62,.16,1.35));     // север, между скамьёй и креслом (только «гостиная»)
+LAY.b.push(plant(0.80,4.38,1.35));    // юг, у арки (только «танцпол»)
 
 /* ---------- консоль при входе (ЮЗ) + зеркало ---------- */
 {const t1=new THREE.Mesh(new THREE.BoxGeometry(.34,.05,.88),M.oak);t1.position.set(.18,.80,4.24);t1.castShadow=true;scene.add(t1);
@@ -403,7 +409,7 @@ label({text:'ТВ',color:'#cfd2d8',flat:true},.16,1.44,1.32,.26);
  [0.72,3.02].forEach(x=>{const m=new THREE.Mesh(new THREE.BoxGeometry(.36,2.50,.08),M.curtain);m.position.set(x,1.28,.15);m.castShadow=true;cg.add(m);});
  const rod=new THREE.Mesh(new THREE.CylinderGeometry(.012,.012,2.80,10),M.brass);rod.rotation.x=Math.PI/2;rod.position.set(1.87,2.56,.15);cg.add(rod);
  [.55,3.19].forEach(x=>{const k=new THREE.Mesh(new THREE.SphereGeometry(.025,8,8),M.brass);k.position.set(x,2.56,.15);cg.add(k);});}
-{const p=new THREE.Group();p.position.set(1.55,0,.78);scene.add(p);STYREF.pouf=p;
+{const p=new THREE.Group();p.position.set(4.10,0,.70);scene.add(p);STYREF.pouf=p;
  const base=new THREE.Mesh(new THREE.CylinderGeometry(.30,.32,.34,20),M.pouf);base.position.y=.17;base.castShadow=true;p.add(base);
  [.10,.21].forEach(h=>{const r=new THREE.Mesh(new THREE.TorusGeometry(.305,.014,8,24),M.oakD);r.rotation.x=Math.PI/2;r.position.y=h;p.add(r);});}
 {const bp=new THREE.Mesh(new THREE.PlaneGeometry(2.15,1.75),M.brick);bp.rotation.y=Math.PI;bp.position.set(3.725,.875,4.664);bp.receiveShadow=true;scene.add(bp);STYREF.brick=bp;}
@@ -460,12 +466,30 @@ function applyStyle(i){
 }
 applyStyle(0);
 
+/* ---------- РАССТАНОВКА 2 «ТАНЦПОЛ»: диван вдоль окна с севера, центр свободен ---------- */
+{const s2=REF.sofa.clone();s2.rotation.y=Math.PI/2;s2.position.set(0.95,0,1.12);scene.add(s2);LAY.b.push(s2);
+ const b2=REF.bench.clone();b2.rotation.y=Math.PI/2;b2.position.set(4.45,0,2.04);scene.add(b2);LAY.b.push(b2);
+ const c2=REF.chair.clone();c2.rotation.y=Math.PI/2;c2.position.set(0.98,0,1.55);scene.add(c2);LAY.b.push(c2);}
+/* расстановка 1 видна по умолчанию; переключение — кнопки в нижней панели */
+function applyMode(m){
+  window.MODE=m;
+  LAY.a.forEach(o=>o.visible=(m===0));
+  LAY.b.forEach(o=>o.visible=(m===1));
+  const t=document.getElementById('modename');
+  if(t)t.textContent=(m===0)?'гостиная':(m===1?'танцпол':'—');
+  document.querySelectorAll('.mb').forEach(b=>{
+    const on=b.dataset.m==String(m);
+    b.style.background=on?'#6f7a4f':'rgba(240,233,223,.92)';
+    b.style.color=on?'#fff':'#20242a';});
+  go(m===1?3:0);
+}
+
 /* ---------- камеры ---------- */
 const P=[
  {p:[2.10,1.62,4.40],t:[1.45,1.10,0.75]},
  {p:[4.30,3.15,1.05],t:[1.55,.60,3.30]},
  {p:[4.35,1.62,3.40],t:[.30,1.28,1.55]},
- {p:[2.35,5.25,2.45],t:[2.30,0.05,2.55]}
+ {p:[2.35,5.20,3.80],t:[2.30,0.05,2.20]}
 ];
 let anim=null;
 function go(i){
@@ -486,7 +510,7 @@ function tick(){
   ctrl.update();renderer.render(scene,camera);
 }
 let auto=false;
-go(0);tick();
+applyMode(0);tick();
 window.SCENE={scene:scene,camera:camera,three:THREE};
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
 </script>
